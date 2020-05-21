@@ -2,7 +2,7 @@ use std::net::SocketAddr;
 use std::task::{Context, Poll};
 use tokio::sync::mpsc::Receiver;
 use tokio::task::{self, JoinHandle};
-use ws_async::WebSocket;
+use crate::WebSocket;
 
 mod factory;
 pub use factory::WsFactory;
