@@ -1,5 +1,7 @@
 use super::UpgradeHandle;
+use hyper::header::HeaderValue;
 use hyper::{header, Body, Request, Response, StatusCode};
+use std::convert::TryFrom;
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
@@ -32,7 +34,8 @@ impl Service<Request<Body>> for WsService {
 
         Box::pin(async move {
             if let Some(key) = req.headers().get(handshake::SEC_WEBSOCKET_KEY) {
-                let accept = handshake::accept(key);
+                let accept = HeaderValue::try_from(handshake::accept(key.as_bytes()))
+                    .expect("Failed to accept handshake header");
                 let res = Response::builder()
                     .status(StatusCode::SWITCHING_PROTOCOLS)
                     .header(header::CONNECTION, header::UPGRADE)

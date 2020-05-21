@@ -6,6 +6,10 @@ pub use client::Client;
 pub mod server;
 pub use server::Server;
 
+pub type Payload = ws_async::Payload<Upgraded>;
+
+pub type Frame = ws_async::Frame<Payload>;
+
 pub type WebSocket = ws_async::WebSocket<Upgraded>;
 
 pub async fn upgrade(body: hyper::Body) -> hyper::Result<WebSocket> {
