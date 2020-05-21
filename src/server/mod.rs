@@ -1,8 +1,9 @@
+use crate::WebSocket;
+use futures::future;
 use std::net::SocketAddr;
 use std::task::{Context, Poll};
 use tokio::sync::mpsc::Receiver;
 use tokio::task::{self, JoinHandle};
-use crate::WebSocket;
 
 mod factory;
 pub use factory::WsFactory;
@@ -38,8 +39,7 @@ impl Server {
     }
 
     pub async fn next_upgrade(&mut self) -> Option<UpgradeHandle> {
-        //future::poll_fn(|cx| self.poll_upgrade(cx)).await
-        todo!()
+        future::poll_fn(|cx| self.poll_upgrade(cx)).await
     }
 
     pub fn poll_upgrade(&mut self, cx: &mut Context) -> Poll<Option<UpgradeHandle>> {
