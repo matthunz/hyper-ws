@@ -8,4 +8,7 @@ edition = "2018"
 name = "hyper_ws"
 
 [dependencies]
+hyper = "0.13.5"
+tokio = "0.2.21"
+tower-service = "0.3.0"
 ws-async = { git = "https://github.com/matthunz/ws-async" }
