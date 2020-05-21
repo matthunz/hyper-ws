@@ -1,5 +1,5 @@
-use tokio::stream::StreamExt;
 use hyper_ws::Server;
+use tokio::stream::StreamExt;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
