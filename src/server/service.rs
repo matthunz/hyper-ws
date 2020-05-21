@@ -3,8 +3,8 @@ use hyper::{header, Body, Request, Response, StatusCode};
 use std::future::Future;
 use std::task::{Context, Poll};
 use tokio::sync::mpsc::Sender;
-use tower_service::Service;
 use tokio::task;
+use tower_service::Service;
 use ws_async::{handshake, Error, Result, WebSocket};
 
 pub struct WsService {
@@ -20,7 +20,7 @@ impl WsService {
 impl Service<Request<Body>> for WsService {
     type Response = Response<Body>;
     type Error = Error;
-    type Future = impl Future<Output = Result<Self::Response>> + Send + Sync;
+    type Future = impl Future<Output = Result<Self::Response>> + Send + Sync + 'static;
 
     fn poll_ready(&mut self, _cx: &mut Context) -> Poll<Result<()>> {
         Ok(()).into()
