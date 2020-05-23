@@ -6,9 +6,9 @@ pub use client::Client;
 pub mod server;
 pub use server::Server;
 
-pub type Payload = ws_async::Payload<Upgraded>;
+pub type Payload = ws_async::frame::Payload<Upgraded>;
 
-pub type Frame = ws_async::Frame<Payload>;
+pub type Frame = ws_async::frame::Frame<Payload>;
 
 pub type WebSocket = ws_async::WebSocket<Upgraded>;
 

@@ -1,5 +1,6 @@
 use hyper_ws::Server;
 use tokio::stream::StreamExt;
+use ws_async::frame::Frame;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -15,6 +16,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let s = std::str::from_utf8(&bytes)?;
                 dbg!(s);
             }
+
+            ws.send_frame(Frame::text("Hello World!".as_bytes()))
+                .await?;
         }
     }
 

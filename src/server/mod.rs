@@ -14,6 +14,22 @@ pub use service::WsService;
 type UpgradeHandle = JoinHandle<hyper::Result<WebSocket>>;
 
 /// A WebSocket socket server, listening for connections.
+/// ```
+/// use hyper_ws::Server;
+/// use tokio::stream::StreamExt;
+///
+/// # async {
+/// let addr = "127.0.0.1:8080".parse()?;
+/// let mut server = Server::bind(&addr)?;
+///
+/// while let Some(ref mut ws) = server.next_socket().await? {
+///     while let Some(Ok(frame)) = ws.next().await {
+///         dbg!(frame);
+///     }    
+/// }
+/// # Ok::<_, Box<dyn std::error::Error>>(())
+/// # };
+/// ```
 pub struct Server {
     rx: Receiver<UpgradeHandle>,
 }
