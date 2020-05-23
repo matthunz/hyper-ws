@@ -1,4 +1,4 @@
-use crate::WebSocket;
+use crate::Socket;
 use hyper::client::conn::Builder;
 use hyper::client::service::Connect;
 use hyper::{header, Body, Request, Uri};
@@ -26,7 +26,7 @@ impl Client {
     pub fn new() -> Self {
         Self::default()
     }
-    pub async fn connect(&mut self, uri: Uri) -> hyper::Result<WebSocket> {
+    pub async fn connect(&mut self, uri: Uri) -> hyper::Result<Socket> {
         self.call(uri).await
     }
 }
@@ -39,7 +39,7 @@ impl<P> From<Builder> for Client<P> {
 }
 
 impl Service<Uri> for Client {
-    type Response = WebSocket;
+    type Response = Socket;
     type Error = hyper::Error;
     type Future = Pin<Box<dyn Future<Output = hyper::Result<Self::Response>> + Send + 'static>>;
 

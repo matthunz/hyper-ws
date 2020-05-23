@@ -10,11 +10,11 @@ pub type Payload = ws_async::frame::Payload<Upgraded>;
 
 pub type Frame = ws_async::frame::Frame<Payload>;
 
-pub type WebSocket = ws_async::WebSocket<Upgraded>;
+pub type Socket = ws_async::Socket<Upgraded>;
 
-pub async fn upgrade(body: hyper::Body) -> hyper::Result<WebSocket> {
+pub async fn upgrade(body: hyper::Body) -> hyper::Result<Socket> {
     body.on_upgrade()
         .await
-        .map(WebSocket::from_upgraded)
+        .map(Socket::from_upgraded)
         .map_err(Into::into)
 }

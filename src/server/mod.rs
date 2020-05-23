@@ -1,4 +1,4 @@
-use crate::WebSocket;
+use crate::Socket;
 use futures::future;
 use std::net::SocketAddr;
 use std::task::{Context, Poll};
@@ -11,7 +11,7 @@ pub use factory::WsFactory;
 mod service;
 pub use service::WsService;
 
-type UpgradeHandle = JoinHandle<hyper::Result<WebSocket>>;
+type UpgradeHandle = JoinHandle<hyper::Result<Socket>>;
 
 /// A WebSocket socket server, listening for connections.
 /// ```
@@ -44,7 +44,7 @@ impl Server {
         Ok(Self { rx })
     }
 
-    pub async fn next_socket(&mut self) -> hyper::Result<Option<WebSocket>> {
+    pub async fn next_socket(&mut self) -> hyper::Result<Option<Socket>> {
         if let Some(handle) = self.next_upgrade().await {
             // TODO don't unwrap
             let ws = handle.await.unwrap()?;

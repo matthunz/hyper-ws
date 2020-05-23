@@ -9,7 +9,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     while let Some(ref mut ws) = server.next_socket().await? {
         while let Some(Ok(frame)) = ws.next().await {
-            let mut payload = frame.into_payload();
+            let mut payload = frame.payload;
 
             while let Some(res) = payload.next().await {
                 let bytes = res?;
