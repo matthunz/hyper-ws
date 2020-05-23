@@ -6,11 +6,13 @@ pub use client::Client;
 pub mod server;
 pub use server::Server;
 
-pub type Payload = ws_async::frame::Payload<Upgraded>;
+pub use ws_async::frame::Opcode;
 
-pub type Frame = ws_async::frame::Frame<Payload>;
+pub type Payload<T = Upgraded> = ws_async::frame::Payload<T>;
 
-pub type Socket = ws_async::Socket<Upgraded>;
+pub type Frame<P = Payload> = ws_async::frame::Frame<P>;
+
+pub type Socket<T = Upgraded> = ws_async::Socket<T>;
 
 pub async fn upgrade(body: hyper::Body) -> hyper::Result<Socket> {
     body.on_upgrade()

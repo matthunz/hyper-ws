@@ -1,6 +1,5 @@
-use hyper_ws::Server;
+use hyper_ws::{Frame, Server};
 use tokio::stream::StreamExt;
-use ws_async::frame::Frame;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -8,16 +7,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut server = Server::bind(&addr)?;
 
     while let Some(ref mut ws) = server.next_socket().await? {
-        while let Some(Ok(frame)) = ws.next().await {
-            let mut payload = frame.payload;
+        while let Some(Ok(mut frame)) = ws.next().await {
+            let bytes = frame.payload.bytes().await?;
 
-            while let Some(res) = payload.next().await {
-                let bytes = res?;
-                let s = std::str::from_utf8(&bytes)?;
-                dbg!(s);
-            }
-
-            ws.send_frame(Frame::text("Hello World!".as_bytes()))
+            ws.send_frame(Frame::new(frame.op, frame.rsv, bytes))
                 .await?;
         }
     }
