@@ -1,5 +1,4 @@
 use hyper_ws::Client;
-use tokio::stream::StreamExt;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -8,12 +7,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let uri = "ws://127.0.0.1:8080".parse()?;
     let mut ws = client.connect(uri).await?;
 
-    while let Some(Ok(frame)) = ws.next().await {
+    while let Some(Ok(frame)) = ws.next_frame().await {
         let mut payload = frame.payload;
 
-        while let Some(res) = payload.next().await {
-            dbg!(res?);
-        }
+        dbg!(payload.bytes().await?);
     }
 
     Ok(())
